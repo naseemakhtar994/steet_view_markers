@@ -5,42 +5,15 @@ buildscript {
     ext.    buildToolsVersion       = "25.0.2"
     ext.    minSdkVersion           = 15
     ext.    targetSdkVersion        = 25
-    ext.    supportLibraryVersion   = "25.1.0"
+    ext.    supportLibraryVersion   = "25.3.1"
     ext.    kotlin_version          = "1.1.1"
     ext.    services_version        = "10.2.1"
-
-    ext.    gsonVersion             = "2.7"
-    ext.    reactiveAndroidVersion  = "1.2.1"
-    ext.    reactiveJavaVersion     = "1.2.0"
-    ext.    rxbinding               = "0.4.0"
-    ext.    butterknifeVersion      = "8.4.0"
-
-    ext.    dbflowVersion           = "4.0.0-beta2"
-    ext.    okhttpVersion           = "3.5.0"
-    ext.    retrofitVersion         = "2.1.0"
-
-    ext.    lombokVersion           = "0.2.3.a2"
-    ext.    retrolambdaVersion      = "3.2.5"
-    ext.    neenbedanktVersion      = "1.8"
-
-    ext.    qrGenVesion             = "2.2.0"
-
-    ext.    mockitoVersion          =  "1.10.19"
-    ext.    dexMakerVersion         = "1.4"
-    ext.    junitVersion            = "4.12"
-    ext.    powermockVersion        = "1.6.5"
-    ext.    espressoVersion         = "2.2.2"
-    ext.    crashlyticsVersion      = "2.6.5@aar"
-    ext.    stethoVersion           = "1.4.2"
 
     repositories {
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
