@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Steet_View_Markers.iml" filepath="$PROJECT_DIR$/Steet_View_Markers.iml" />
       <module fileurl="file://$PROJECT_DIR$/StreetViewMarker.iml" filepath="$PROJECT_DIR$/StreetViewMarker.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/streetviewmarker/streetviewmarker.iml" filepath="$PROJECT_DIR$/streetviewmarker/streetviewmarker.iml" />
       <module fileurl="file://$PROJECT_DIR$/streetviewmarker/streetviewmarker.iml" filepath="$PROJECT_DIR$/streetviewmarker/streetviewmarker.iml" />
     </modules>
   </component>
