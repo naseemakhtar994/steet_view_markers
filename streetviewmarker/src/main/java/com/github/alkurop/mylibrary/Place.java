@@ -1,12 +1,13 @@
 package com.github.alkurop.mylibrary;
 
+import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 
 /**
  * Created by alkurop on 2/3/17.
  */
 
-public interface Place {
+public interface Place extends Parcelable {
 
     String getId ();
 
