@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary;
+package com.github.alkurop.streetviewmarker;
 
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;

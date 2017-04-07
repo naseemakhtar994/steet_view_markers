@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary;
+package com.github.alkurop.streetviewmarker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

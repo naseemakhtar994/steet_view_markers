@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary;
+package com.github.alkurop.streetviewmarker;
 
 public class UpdatePosition {
   public Location center;

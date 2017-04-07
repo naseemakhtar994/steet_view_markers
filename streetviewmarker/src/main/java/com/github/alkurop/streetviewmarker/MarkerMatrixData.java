@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary;
+package com.github.alkurop.streetviewmarker;
 
 /**
  * Created by alkurop on 31.05.16.

@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary.components
+package com.github.alkurop.streetviewmarker.components
 
 import android.content.Context
 import android.graphics.Canvas

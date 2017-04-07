@@ -1,12 +1,12 @@
-package com.github.alkurop.mylibrary
+package com.github.alkurop.streetviewmarker
 
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import com.github.alkurop.mylibrary.components.IStreetOverlayView
-import com.github.alkurop.mylibrary.components.StreetOverlayView
-import com.github.alkurop.mylibrary.components.TouchOverlayView
+import com.github.alkurop.streetviewmarker.components.IStreetOverlayView
+import com.github.alkurop.streetviewmarker.components.StreetOverlayView
+import com.github.alkurop.streetviewmarker.components.TouchOverlayView
 import com.google.android.gms.maps.StreetViewPanoramaView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera
@@ -17,11 +17,12 @@ import java.util.*
  */
 class StreetMarkerView : LinearLayout, IStreetOverlayView {
   val overlay: StreetOverlayView
-
   val streetView: StreetViewPanoramaView
   val touchOverlay: TouchOverlayView
+
   var onSteetLoadedSuccess: ((Boolean) -> Unit)? = null
   var onCameraUpdateListener: ((UpdatePosition) -> Unit)? = null
+
   override var mapsConfig: MapsConfig
     set(value) {
       overlay.mapsConfig = value
@@ -34,7 +35,7 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
   @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0)
       : super(context, attrs, defStyleAttr, defStyleRes) {
     inflate(context, R.layout.view_street_marker, this)
-    overlay = findViewById(R.id.panorama) as StreetOverlayView
+    overlay = findViewById(R.id.overlay) as StreetOverlayView
     streetView = findViewById(R.id.panorama) as StreetViewPanoramaView
     touchOverlay = findViewById(R.id.touch) as TouchOverlayView
 
@@ -49,14 +50,7 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
     overlay.onCameraUpdate(cameraPosition)
   }
 
-  override fun addMarkers(markers: HashSet<Place>) {
-    val addMarkers = markers.filter { marker ->
-      !markerDataList.contains(marker)
-    }
-    if (addMarkers.isNotEmpty())
-      overlay.addMarkers(markers)
-    markerDataList.addAll(addMarkers)
-  }
+
 
   override fun onClick() {
     overlay.onClick()
@@ -87,6 +81,15 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
     }
   }
 
+  override fun addMarkers(markers: HashSet<Place>) {
+    val addMarkers = markers.filter { marker ->
+      !markerDataList.contains(marker)
+    }
+    if (addMarkers.isNotEmpty())
+      overlay.addMarkers(markers)
+    markerDataList.addAll(addMarkers)
+  }
+
 
   //State callbacks
 
@@ -97,11 +100,11 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
         overlay.onCameraUpdate(cameraPosition)
       }
       panorama.setOnStreetViewPanoramaChangeListener { cameraPosition ->
-        if (cameraPosition != null && cameraPosition.position != null) {
+        if (cameraPosition !== null && cameraPosition.position !== null) {
           overlay.onLocationUpdate(cameraPosition.position)
           sendCameraPosition(cameraPosition.position)
         }
-        onSteetLoadedSuccess?.invoke(cameraPosition != null && cameraPosition.links != null)
+        onSteetLoadedSuccess?.invoke(cameraPosition !== null && cameraPosition.links != null)
       }
     }
     touchOverlay.onTouchListener = {

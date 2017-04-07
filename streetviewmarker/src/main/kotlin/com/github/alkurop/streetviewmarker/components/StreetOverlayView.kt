@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary.components
+package com.github.alkurop.streetviewmarker.components
 
 import android.content.Context
 import android.graphics.PixelFormat
@@ -7,14 +7,13 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.github.alkurop.mylibrary.MapsConfig
-import com.github.alkurop.mylibrary.MarkerDrawData
-import com.github.alkurop.mylibrary.Place
-import com.github.alkurop.mylibrary.UpdatePosition
+import com.github.alkurop.streetviewmarker.MapsConfig
+import com.github.alkurop.streetviewmarker.MarkerDrawData
+import com.github.alkurop.streetviewmarker.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera
 import java.util.*
-import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.*
 
 /**
  * Created by alkurop on 31.05.16.
@@ -56,7 +55,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
   override fun onLocationUpdate(location: LatLng) {
     this.mLocation = location
     val pos = mCameraPosition
-    if (pos != null) {
+    if (pos !== null) {
       mDrawThread?.updateCamera(location, pos.bearing, pos.tilt, pos.zoom)
     } else {
       mDrawThread?.updateCamera(location, 0.toFloat(), 0.toFloat(), 0.toFloat())
@@ -65,7 +64,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
 
   override fun onCameraUpdate(cameraPosition: StreetViewPanoramaCamera) {
     this.mCameraPosition = cameraPosition
-    if (mLocation != null) {
+    if (mLocation !== null) {
       mDrawThread?.updateCamera(mLocation!!, cameraPosition.bearing, cameraPosition.tilt, cameraPosition.zoom)
     }
   }

@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-<com.github.alkurop.mylibrary.components.StreetOverlayView
+<com.github.alkurop.streetviewmarker.components.StreetOverlayView
     android:id="@+id/overlay"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
@@ -11,7 +11,7 @@
       android:id="@+id/panorama"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
-  <com.github.alkurop.mylibrary.components.TouchOverlayView
+  <com.github.alkurop.streetviewmarker.components.TouchOverlayView
       android:id="@+id/touch"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>

@@ -1,4 +1,4 @@
-package com.github.alkurop.mylibrary.components
+package com.github.alkurop.streetviewmarker.components
 
 import android.content.Context
 import android.content.res.Resources
@@ -14,12 +14,12 @@ import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.view.SurfaceHolder
-import com.github.alkurop.mylibrary.BufferMarkerDrawData
-import com.github.alkurop.mylibrary.MapsConfig
-import com.github.alkurop.mylibrary.MarkerDrawData
-import com.github.alkurop.mylibrary.MarkerGeoData
-import com.github.alkurop.mylibrary.MarkerMatrixData
-import com.github.alkurop.mylibrary.Place
+import com.github.alkurop.streetviewmarker.BufferMarkerDrawData
+import com.github.alkurop.streetviewmarker.MapsConfig
+import com.github.alkurop.streetviewmarker.MarkerDrawData
+import com.github.alkurop.streetviewmarker.MarkerGeoData
+import com.github.alkurop.streetviewmarker.MarkerMatrixData
+import com.github.alkurop.streetviewmarker.Place
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -212,7 +212,7 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
   }
 
   private fun calculate() {
-    if (mLocation != null) {
+    if (mLocation !== null) {
       val geoData = markers.map { calculateGeoData(mLocation!!, it) }
       val data = geoData.map { generateMatrix(it) }
       matrixSet.removeAll(data)
