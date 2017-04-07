@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.widget.Toast
 import com.github.alkurop.streetviewmarker.Location
 import com.github.alkurop.streetviewmarker.Place
 import kotlinx.android.synthetic.main.activity_demo.*
@@ -19,11 +21,20 @@ class DemoActivity : AppCompatActivity() {
 
   override fun onPostCreate(savedInstanceState: Bundle?) {
     super.onPostCreate(savedInstanceState)
-
-
     val markerLoc = Location(50.447604999999996, 30.5221409999999998)
     val place = MyPlace("test", markerLoc, "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg", R.drawable.ic_launcher)
     marker_view.addMarkers(hashSetOf(place))
+    marker_view.setOnMarkerClickListener {
+      Toast.makeText(this, "maker was clicked $it", Toast.LENGTH_SHORT).show()
+    }
+    marker_view.onSteetLoadedSuccess = { loadedSuccss ->
+      if (!loadedSuccss) {
+        Toast.makeText(this, "This place cannot be shown in street view. Show user some other view", Toast.LENGTH_SHORT).show()
+      }
+    }
+    marker_view.onCameraUpdateListener = {
+      Log.d("street_view", "camera position changed. new position $it")
+    }
   }
 
 

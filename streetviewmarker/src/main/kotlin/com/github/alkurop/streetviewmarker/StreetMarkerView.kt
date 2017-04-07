@@ -2,7 +2,6 @@ package com.github.alkurop.streetviewmarker
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.github.alkurop.streetviewmarker.components.IStreetOverlayView
@@ -137,7 +136,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
 
   fun onResume() {
     streetView.onResume()
-    markerView.postDelayed({    cam?.let { markerView.onCameraUpdate(it) } }, 300)
+    markerView.postDelayed({cam?.let { markerView.onCameraUpdate(it) } }, 300)
   }
 
   fun onPause() {
