@@ -31,7 +31,7 @@ interface IStreetOverlayView {
 
 class StreetOverlayView : SurfaceView, IStreetOverlayView,
     SurfaceHolder.Callback {
-  override var mapsConfig: MapsConfig  = MapsConfig()
+  override var mapsConfig: MapsConfig = MapsConfig()
   val TAG = StreetOverlayView::class.java.simpleName
   private val mMarkers = CopyOnWriteArrayList<Place>()
   private val mDrawMarkers = CopyOnWriteArrayList<MarkerDrawData?>()
@@ -50,6 +50,14 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
   init {
     holder.addCallback(this)
     holder.setFormat(PixelFormat.TRANSPARENT)
+  }
+
+  fun stop() {
+    mDrawThread?.setRunning(false)
+    mDrawMarkers.clear()
+    mMarkers.clear()
+    mLocation = null
+    mCameraPosition = null
   }
 
   override fun onLocationUpdate(location: LatLng) {
@@ -78,7 +86,6 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
 
 
   override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-    Log.d(TAG, "surface surfaceChanged")
   }
 
   override fun surfaceDestroyed(holder: SurfaceHolder?) {

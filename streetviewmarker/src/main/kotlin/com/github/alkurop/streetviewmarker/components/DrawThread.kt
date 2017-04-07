@@ -94,10 +94,12 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
       } catch(e: Exception) {
         e.printStackTrace()
       } finally {
+        try{
         surfaceHolder.unlockCanvasAndPost(canvas)
+        }catch (e:Exception){}
       }
     }
-    bitmapMap.clear()
+    //bitmapMap.clear()
   }
 
   private fun drawMarkersOnCanvas(canvas: Canvas) {

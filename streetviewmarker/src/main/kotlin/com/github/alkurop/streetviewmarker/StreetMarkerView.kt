@@ -3,7 +3,7 @@ package com.github.alkurop.streetviewmarker
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import com.github.alkurop.streetviewmarker.components.IStreetOverlayView
 import com.github.alkurop.streetviewmarker.components.StreetOverlayView
 import com.github.alkurop.streetviewmarker.components.TouchOverlayView
@@ -15,8 +15,8 @@ import java.util.*
 /**
  * Created by alkurop on 2/3/17.
  */
-class StreetMarkerView : LinearLayout, IStreetOverlayView {
-  val overlay: StreetOverlayView
+class StreetMarkerView : FrameLayout, IStreetOverlayView {
+  val markerView: StreetOverlayView
   val streetView: StreetViewPanoramaView
   val touchOverlay: TouchOverlayView
 
@@ -25,39 +25,37 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
 
   override var mapsConfig: MapsConfig
     set(value) {
-      overlay.mapsConfig = value
+      markerView.mapsConfig = value
     }
-    get() = overlay.mapsConfig
+    get() = markerView.mapsConfig
 
   var shouldFocusToMyLocation = true
   var markerDataList = hashSetOf<Place>()
 
+  var cam: StreetViewPanoramaCamera? = null
+
   @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0)
       : super(context, attrs, defStyleAttr, defStyleRes) {
     inflate(context, R.layout.view_street_marker, this)
-    overlay = findViewById(R.id.overlay) as StreetOverlayView
+    markerView = findViewById(R.id.overlay) as StreetOverlayView
     streetView = findViewById(R.id.panorama) as StreetViewPanoramaView
     touchOverlay = findViewById(R.id.touch) as TouchOverlayView
-
-
   }
 
   override fun onLocationUpdate(location: LatLng) {
-    overlay.onLocationUpdate(location)
+    markerView.onLocationUpdate(location)
   }
 
   override fun onCameraUpdate(cameraPosition: StreetViewPanoramaCamera) {
-    overlay.onCameraUpdate(cameraPosition)
+    markerView.onCameraUpdate(cameraPosition)
   }
 
-
-
   override fun onClick() {
-    overlay.onClick()
+    markerView.onClick()
   }
 
   override fun setOnMarkerClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?) {
-    overlay.setOnMarkerClickListener(onClickListener)
+    markerView.setOnMarkerClickListener(onClickListener)
   }
 
   private fun sendCameraPosition(position: LatLng) {
@@ -86,7 +84,7 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
       !markerDataList.contains(marker)
     }
     if (addMarkers.isNotEmpty())
-      overlay.addMarkers(markers)
+      markerView.addMarkers(markers)
     markerDataList.addAll(addMarkers)
   }
 
@@ -96,21 +94,24 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
   fun onCreate(state: Bundle?) {
     streetView.onCreate(state)
     streetView.getStreetViewPanoramaAsync { panorama ->
+      markerView.onCameraUpdate(panorama.panoramaCamera)
       panorama.setOnStreetViewPanoramaCameraChangeListener { cameraPosition ->
-        overlay.onCameraUpdate(cameraPosition)
+        cam = cameraPosition
+        markerView.onCameraUpdate(cameraPosition)
       }
       panorama.setOnStreetViewPanoramaChangeListener { cameraPosition ->
         if (cameraPosition !== null && cameraPosition.position !== null) {
-          overlay.onLocationUpdate(cameraPosition.position)
+          markerView.onLocationUpdate(cameraPosition.position)
           sendCameraPosition(cameraPosition.position)
         }
         onSteetLoadedSuccess?.invoke(cameraPosition !== null && cameraPosition.links != null)
       }
+      panorama.setOnStreetViewPanoramaClickListener { onClick() }
     }
     touchOverlay.onTouchListener = {
-      overlay.onTouchEvent(it)
+      markerView.onTouchEvent(it)
     }
-    overlay.setOnMarkerClickListener {
+    markerView.setOnMarkerClickListener {
       onMarkerClicker(it.matrixData.data)
     }
     restoreState(state)
@@ -121,6 +122,7 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
       shouldFocusToMyLocation = saveState.getBoolean("shouldFocusToMyLocation", true)
       markerDataList = (saveState.getParcelableArray("markerModels") as Array<Place>).toHashSet()
     }
+    markerView.addMarkers(markerDataList)
   }
 
   fun onSaveInstanceState(state: Bundle?): Bundle {
@@ -128,11 +130,13 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
     bundle.putParcelableArray("markerModels", markerDataList.toTypedArray())
     bundle.putBoolean("shouldFocusToMyLocation", shouldFocusToMyLocation)
     streetView.onSaveInstanceState(bundle)
+    markerDataList.clear()
     return bundle
   }
 
   fun onResume() {
     streetView.onResume()
+    cam?.let { markerView.onCameraUpdate(it) }
   }
 
   fun onPause() {
@@ -141,6 +145,7 @@ class StreetMarkerView : LinearLayout, IStreetOverlayView {
 
   fun onDestroy() {
     streetView.onDestroy()
+    markerView.stop()
   }
 
   fun onLowMemory() = streetView.onLowMemory()
