@@ -1,4 +1,4 @@
-package com.github.alkurop.streetviewmarker.components
+package com.github.alkurop.streetviewmarker
 
 import android.content.Context
 import android.content.res.Resources
@@ -45,7 +45,7 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
   val TAG = DrawThread::class.java.simpleName
   private val matrixSet = hashSetOf<MarkerMatrixData>()
   private val bitmapMap = ConcurrentHashMap<String, Bitmap>()
-  private val targetMap = ConcurrentHashMap<String, PicassoTarget>()
+  private val targetMap = ConcurrentHashMap<String, com.squareup.picasso.Target>()
   private val locBufferMap = HashMap<String, LinkedList<BufferMarkerDrawData>>()
   private val picassoHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -174,7 +174,7 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
   private fun loadPicture(key: String, path: String) {
     if (!TextUtils.isEmpty(path) && !targetMap.containsKey(key)) {
       Log.d(TAG, "bitmap load started")
-      val target = object : PicassoTarget {
+      val target = object : com.squareup.picasso.Target {
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
 
         }

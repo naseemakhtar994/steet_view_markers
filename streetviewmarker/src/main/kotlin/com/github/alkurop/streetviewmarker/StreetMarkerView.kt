@@ -4,9 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.github.alkurop.streetviewmarker.components.IStreetOverlayView
-import com.github.alkurop.streetviewmarker.components.StreetOverlayView
-import com.github.alkurop.streetviewmarker.components.TouchOverlayView
 import com.google.android.gms.maps.StreetViewPanoramaView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera
@@ -22,6 +19,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
 
   var onSteetLoadedSuccess: ((Boolean) -> Unit)? = null
   var onCameraUpdateListener: ((UpdatePosition) -> Unit)? = null
+  var onMarkerClickListener: ((Place) -> Unit)? = null
 
   override var mapsConfig: MapsConfig
     set(value) {
@@ -54,8 +52,8 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
     markerView.onClick()
   }
 
-  override fun setOnMarkerClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?) {
-    markerView.setOnMarkerClickListener(onClickListener)
+  override fun setLocalClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?) {
+    markerView.setLocalClickListener(onClickListener)
   }
 
   private fun sendCameraPosition(position: LatLng) {
@@ -67,6 +65,8 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
   fun onMarkerClicker(geoData: MarkerGeoData) {
     if (geoData.distance >= mapsConfig.markerMinPositionToMoveToMarker / 1000.toDouble()) {
       focusToLocation(geoData.place.location)
+    }else{
+      onMarkerClickListener?.invoke(geoData.place)
     }
   }
 
@@ -111,7 +111,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
     touchOverlay.onTouchListener = {
       markerView.onTouchEvent(it)
     }
-    markerView.setOnMarkerClickListener {
+    markerView.setLocalClickListener {
       onMarkerClicker(it.matrixData.data)
     }
     restoreState(state)

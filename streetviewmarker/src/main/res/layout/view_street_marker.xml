@@ -5,7 +5,7 @@
              android:orientation="vertical">
 
 
-  <com.github.alkurop.streetviewmarker.components.StreetOverlayView
+  <com.github.alkurop.streetviewmarker.StreetOverlayView
       android:id="@+id/overlay"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -15,7 +15,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
 
-  <com.github.alkurop.streetviewmarker.components.TouchOverlayView
+  <com.github.alkurop.streetviewmarker.TouchOverlayView
       android:id="@+id/touch"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

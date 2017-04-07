@@ -1,4 +1,4 @@
-package com.github.alkurop.streetviewmarker.components
+package com.github.alkurop.streetviewmarker
 
 import android.content.Context
 import android.graphics.PixelFormat
@@ -7,9 +7,6 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.github.alkurop.streetviewmarker.MapsConfig
-import com.github.alkurop.streetviewmarker.MarkerDrawData
-import com.github.alkurop.streetviewmarker.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera
 import java.util.*
@@ -18,12 +15,12 @@ import java.util.concurrent.*
 /**
  * Created by alkurop on 31.05.16.
  */
-interface IStreetOverlayView {
+internal interface IStreetOverlayView {
   fun onLocationUpdate(location: LatLng)
   fun onCameraUpdate(cameraPosition: StreetViewPanoramaCamera)
   fun addMarkers(markers: HashSet<Place>)
   fun onClick()
-  fun setOnMarkerClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?)
+  fun setLocalClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?)
   fun onTouchEvent(event: MotionEvent?): Boolean
   var mapsConfig: MapsConfig
 
@@ -145,7 +142,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
     }
   }
 
-  override fun setOnMarkerClickListener(onClickListener: ((MarkerDrawData) -> Unit)?) {
+  override fun setLocalClickListener(onClickListener: ((MarkerDrawData) -> Unit)?) {
     this.listener = onClickListener
   }
 
