@@ -83,7 +83,7 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
           screenHeight = surfaceHolder.surfaceFrame.width().toDouble()
         }
 
-        initX = (screenWidth.toDouble() * 0.3).toDouble()
+        initX = (screenWidth * 0.3)
         initY = initX
         canvas = surfaceHolder.lockCanvas(null)
         synchronized(surfaceHolder) {
@@ -206,11 +206,11 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
     mBearing = bearing.toDouble()
     mTilt = tilt.toDouble()
     mZoom = 1.0 + zoom.toDouble()
-    xCalcAngle = mapsConfig.xMapCameraAngle.toDouble() / mZoom
-    yCalcAngle = mapsConfig.yMapCameraAngle.toDouble() / mZoom
+    xCalcAngle = mapsConfig.xMapCameraAngle / mZoom
+    yCalcAngle = mapsConfig.yMapCameraAngle / mZoom
     calcFlag = true
-    xTransitionDim = screenWidth.toDouble() / xCalcAngle
-    yTransitionDim = screenHeight.toDouble() / yCalcAngle
+    xTransitionDim = screenWidth / xCalcAngle
+    yTransitionDim = screenHeight / yCalcAngle
   }
 
   private fun calculate() {
@@ -252,11 +252,11 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
       if (scale > 1) {
         scale = 1.toDouble()
       }
-      if (scale <= mapsConfig.minMarkerSize.toDouble() &&
-          mapsConfig.markersToShowStreetRadius.toDouble() - geoData.distance.toDouble() * 1000.toDouble() > 0) {
-        scale = mapsConfig.minMarkerSize.toDouble()
+      if (scale <= mapsConfig.minMarkerSize &&
+          mapsConfig.markersToShowStreetRadius - geoData.distance * 1000.toDouble() > 0) {
+        scale = mapsConfig.minMarkerSize
 
-      } else if (scale <= mapsConfig.minMarkerSize.toDouble()) {
+      } else if (scale <= mapsConfig.minMarkerSize) {
         scale = 0.toDouble()
       }
       scale *= (mZoom - 1) / 2 + 1
