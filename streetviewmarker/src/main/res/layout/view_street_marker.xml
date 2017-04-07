@@ -4,12 +4,12 @@
              android:layout_height="match_parent"
              android:orientation="vertical">
 
+
   <com.github.alkurop.streetviewmarker.components.StreetOverlayView
       android:id="@+id/overlay"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
-
   <com.google.android.gms.maps.StreetViewPanoramaView
       android:id="@+id/panorama"
       android:layout_width="match_parent"
