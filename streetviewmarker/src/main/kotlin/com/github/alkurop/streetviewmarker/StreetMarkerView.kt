@@ -92,7 +92,8 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
   //State callbacks
 
   fun onCreate(state: Bundle?) {
-    streetView.onCreate(state)
+    val streetBundle = state?.getBundle("streetView")
+    streetView.onCreate(streetBundle)
     streetView.getStreetViewPanoramaAsync { panorama ->
       markerView.onCameraUpdate(panorama.panoramaCamera)
       panorama.setOnStreetViewPanoramaCameraChangeListener { cameraPosition ->
@@ -129,7 +130,9 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
     val bundle = state ?: Bundle()
     bundle.putParcelableArray("markerModels", markerDataList.toTypedArray())
     bundle.putBoolean("shouldFocusToMyLocation", shouldFocusToMyLocation)
-    streetView.onSaveInstanceState(bundle)
+    val streetBundle = Bundle()
+    streetView.onSaveInstanceState(streetBundle)
+    bundle.putBundle("steetView", streetBundle)
     markerDataList.clear()
     return bundle
   }

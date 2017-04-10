@@ -12,10 +12,8 @@ android {
     applicationId "com.github.alkurop.demo"
     versionCode 1
     versionName "1.0"
-
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
   }
+
   signingConfigs {
     test {
       keyAlias 'key0'
@@ -39,12 +37,9 @@ android {
 }
 
 dependencies {
+  compile "com.google.android.gms:play-services-maps:$services_version"
   compile project(':streetviewmarker')
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-  })
-  compile("com.google.android.gms:play-services-maps:$services_version")
-
+  compile "com.android.support:appcompat-v7:$supportLibraryVersion"
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   testCompile 'junit:junit:4.12'
 }
