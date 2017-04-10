@@ -1,5 +1,6 @@
 package com.github.alkurop.demo
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
@@ -72,14 +73,19 @@ class DemoActivity : AppCompatActivity() {
   }
 }
 
-data class MyPlace(val markerId: String, val markerLocation: LatLng, val iconPath: String, val drawableRes: Int) : Place {
+data class MyPlace(val markerId: String, val markerLocation: LatLng, val iconPath: String, val icon: Int) : Place {
+
+  override fun getBitmap(): Bitmap? {
+    return null
+  }
+
   override fun getId(): String = markerId
 
   override fun getLocation(): LatLng = markerLocation
 
   override fun getMarkerPath(): String = iconPath
 
-  override fun getDrawable(): Int = drawableRes
+  override fun getDrawableRes(): Int = icon
 
   companion object {
     @Suppress("UNUSED")
@@ -97,6 +103,6 @@ data class MyPlace(val markerId: String, val markerLocation: LatLng, val iconPat
     dest?.writeString(markerId)
     dest?.writeParcelable(markerLocation, 0)
     dest?.writeString(iconPath)
-    dest?.writeInt(drawableRes)
+    dest?.writeInt(icon)
   }
 }

@@ -94,7 +94,6 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
         }
       }
     }
-    //bitmapMap.clear()
   }
 
   private fun drawMarkersOnCanvas(canvas: Canvas) {
@@ -103,15 +102,7 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
       val key = matrixData.data.id
       if (matrixData.shouldShow) {
         with(matrixData) {
-          bitmapMap.containsKey(key = key)
-          val bitmap = if (bitmapMap.containsKey(key)) {
-            bitmapMap[key]!!
-          } else {
-            val bitmap = BitmapFactory.decodeResource(resources, data.place.drawable)
-            bitmapMap.put(key, bitmap)
-            loadPicture(key, data.place.markerPath)
-            bitmap
-          }
+          val bitmap: Bitmap? = getBitmapFromModel(key)
 
           val xLeft = (xLoc - (initX / 2.toDouble() * scale))
           val yTop = yLoc - initY / 2.toDouble() * scale
@@ -148,13 +139,16 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
               bufferDataCentered.top.toFloat(),
               bufferDataCentered.right.toFloat(),
               bufferDataCentered.bottom.toFloat())
-          canvas.drawBitmap(bitmap, null, rec, null)
-          markerData = MarkerDrawData(
-              matrixData,
-              bufferDataCentered.left.toFloat(),
-              bufferDataCentered.top.toFloat(),
-              bufferDataCentered.right.toFloat(),
-              bufferDataCentered.bottom.toFloat())
+
+          bitmap?.let {
+            canvas.drawBitmap(bitmap, null, rec, null)
+            markerData = MarkerDrawData(
+                matrixData,
+                bufferDataCentered.left.toFloat(),
+                bufferDataCentered.top.toFloat(),
+                bufferDataCentered.right.toFloat(),
+                bufferDataCentered.bottom.toFloat())
+          }
         }
       }
       if (!matrixData.shouldShow) {
@@ -164,6 +158,29 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
     }.filter { it != null }
     drawData.clear()
     drawData.addAll(drawDataList)
+  }
+
+  private fun MarkerMatrixData.getBitmapFromModel(key: String): Bitmap? {
+    val containsKey = bitmapMap.containsKey(key)
+    val bitmap: Bitmap? = if (containsKey) {
+      bitmapMap[key]!!
+    } else if (data.place.drawableRes != 0) {
+      val bitmap = BitmapFactory.decodeResource(resources, data.place.drawableRes)
+      bitmapMap.put(key, bitmap)
+      bitmap
+    } else {
+      val modelBitmap = data.place.bitmap
+      modelBitmap?.let {
+        bitmapMap.put(key, it)
+      }
+      modelBitmap
+    }
+    if (containsKey.not()) {
+      data.place.markerPath?.let {
+        loadPicture(key, it)
+      }
+    }
+    return bitmap
   }
 
   private fun loadPicture(key: String, path: String) {
@@ -176,15 +193,11 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
 
         override fun onBitmapFailed(errorDrawable: Drawable?) {
           targetMap.remove(key)
-          Log.d(TAG, "bitmap load failed")
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
           if (bitmap != null) {
             bitmapMap.put(key, bitmap)
-            Log.d(TAG, "bitmap load completed")
-          } else {
-            Log.d(TAG, "bitmap decode failed")
           }
           targetMap.remove(key)
         }
@@ -221,12 +234,10 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
 
   private fun generateMatrix(geoData: MarkerGeoData): MarkerMatrixData {
 
-
     val isInRange = geoData.distance * 1000 <= mapsConfig.markersToShowStreetRadius
     var xLoc = 0.toDouble()
     var yLoc = 0.toDouble()
     var scale = 0.toDouble()
-
 
     var shouldShow: Boolean
     if (mBearing - geoData.azimuth > 180 || mBearing - geoData.azimuth < -180) {
@@ -240,7 +251,6 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
     if (!isInRange) shouldShow = false
 
     if (shouldShow) {
-      //log(TAG, geoData.toString())
       scale = ((mapsConfig.markerScaleRadius - geoData.distance * 1000.toDouble())
           / mapsConfig.markerScaleRadius)
 

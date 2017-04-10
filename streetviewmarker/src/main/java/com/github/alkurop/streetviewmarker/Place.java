@@ -1,7 +1,10 @@
 package com.github.alkurop.streetviewmarker;
 
+import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -10,11 +13,13 @@ import com.google.android.gms.maps.model.LatLng;
 
 public interface Place extends Parcelable {
 
-    String getId ();
+  @NonNull String getId();
 
-    LatLng getLocation ();
+  @NonNull LatLng getLocation();
 
-    String getMarkerPath();
+  @Nullable String getMarkerPath();
 
-    @DrawableRes int getDrawable ();
+  @Nullable @DrawableRes int getDrawableRes();
+
+  @Nullable Bitmap getBitmap();
 }

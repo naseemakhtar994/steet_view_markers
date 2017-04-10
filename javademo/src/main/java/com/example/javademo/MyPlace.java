@@ -1,7 +1,9 @@
 package com.example.javademo;
 
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
+import android.support.annotation.Nullable;
 import com.github.alkurop.streetviewmarker.Place;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -34,8 +36,14 @@ public class MyPlace implements Place {
   }
 
   @Override
-  public int getDrawable() {
+  public int getDrawableRes() {
     return drawable;
+  }
+
+  @Nullable
+  @Override
+  public Bitmap getBitmap() {
+    return null;
   }
 
 
