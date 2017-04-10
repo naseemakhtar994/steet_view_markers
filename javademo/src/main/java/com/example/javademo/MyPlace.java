@@ -2,16 +2,16 @@ package com.example.javademo;
 
 
 import android.os.Parcel;
-import com.github.alkurop.streetviewmarker.Location;
 import com.github.alkurop.streetviewmarker.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MyPlace implements Place {
   private final String markerId;
   private final String iconPath;
   private final int drawable;
-  private final Location location;
+  private final LatLng location;
 
-  public MyPlace(String markerId, Location location, String iconPath, int drawable) {
+  public MyPlace(String markerId, LatLng location, String iconPath, int drawable) {
     this.markerId = markerId;
     this.iconPath = iconPath;
     this.drawable = drawable;
@@ -24,7 +24,7 @@ public class MyPlace implements Place {
   }
 
   @Override
-  public Location getLocation() {
+  public LatLng getLocation() {
     return location;
   }
 
@@ -54,7 +54,7 @@ public class MyPlace implements Place {
     this.markerId = in.readString();
     this.iconPath = in.readString();
     this.drawable = in.readInt();
-    this.location = in.readParcelable(Location.class.getClassLoader());
+    this.location = in.readParcelable(LatLng.class.getClassLoader());
   }
 
   public static final Creator<MyPlace> CREATOR = new Creator<MyPlace>() {

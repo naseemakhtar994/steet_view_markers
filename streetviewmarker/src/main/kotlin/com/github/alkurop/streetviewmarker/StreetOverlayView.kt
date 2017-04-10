@@ -86,7 +86,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
   }
 
   override fun surfaceDestroyed(holder: SurfaceHolder?) {
-    var retry = true;
+    var retry = true
     mDrawThread?.setRunning(false)
     while (retry) {
       try {

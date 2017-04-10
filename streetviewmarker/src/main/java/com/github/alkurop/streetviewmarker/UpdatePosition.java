@@ -1,10 +1,12 @@
 package com.github.alkurop.streetviewmarker;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class UpdatePosition {
-  public Location center;
+  public LatLng center;
   public long radius;
 
-  public UpdatePosition(Location center, long radius) {
+  public UpdatePosition(LatLng center, long radius) {
     this.center = center;
     this.radius = radius;
   }

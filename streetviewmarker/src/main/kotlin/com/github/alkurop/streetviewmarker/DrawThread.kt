@@ -14,12 +14,6 @@ import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.view.SurfaceHolder
-import com.github.alkurop.streetviewmarker.BufferMarkerDrawData
-import com.github.alkurop.streetviewmarker.MapsConfig
-import com.github.alkurop.streetviewmarker.MarkerDrawData
-import com.github.alkurop.streetviewmarker.MarkerGeoData
-import com.github.alkurop.streetviewmarker.MarkerMatrixData
-import com.github.alkurop.streetviewmarker.Place
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -94,9 +88,10 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
       } catch(e: Exception) {
         e.printStackTrace()
       } finally {
-        try{
-        surfaceHolder.unlockCanvasAndPost(canvas)
-        }catch (e:Exception){}
+        try {
+          surfaceHolder.unlockCanvasAndPost(canvas)
+        } catch (e: Exception) {
+        }
       }
     }
     //bitmapMap.clear()
@@ -233,7 +228,7 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
     var scale = 0.toDouble()
 
 
-    var shouldShow = false
+    var shouldShow: Boolean
     if (mBearing - geoData.azimuth > 180 || mBearing - geoData.azimuth < -180) {
       shouldShow = Math.abs(geoData.azimuth - mBearing + 360) < xCalcAngle ||
           Math.abs(geoData.azimuth - mBearing - 360) < xCalcAngle
@@ -284,8 +279,8 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
   }
 
   private fun calculateGeoData(location: LatLng, place: Place): MarkerGeoData {
-    val distance = calculatePlaceDistance(location, LatLng(place.location.lat, place.location.lng))
-    val azimuth = calculatePlaceAzimuth(location, LatLng(place.location.lat, place.location.lng))
+    val distance = calculatePlaceDistance(location, LatLng(place.location.latitude, place.location.longitude))
+    val azimuth = calculatePlaceAzimuth(location, LatLng(place.location.latitude, place.location.longitude))
     return MarkerGeoData(place, distance, azimuth)
   }
 
@@ -299,18 +294,6 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
     if (angle < 0) angle += 360
     if (angle > 360) angle -= 360
     return angle
-  }
-
-  private fun calculatePlaceDistance(myLocation: LatLng, markerLocation: LatLng): Double {
-    val R = 6371 // km
-    val dLat = (myLocation.latitude - markerLocation.latitude).toRad()
-    val dLon = (myLocation.longitude - markerLocation.longitude).toRad()
-    val lat1 = myLocation.latitude.toRad()
-    val lat2 = markerLocation.latitude.toRad()
-    val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
-    val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    val d = R * c
-    return d
   }
 }
 

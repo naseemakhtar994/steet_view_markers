@@ -6,9 +6,9 @@ import android.os.Parcelable
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
-import com.github.alkurop.streetviewmarker.Location
 import com.github.alkurop.streetviewmarker.MapsConfig
 import com.github.alkurop.streetviewmarker.Place
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_demo.*
 
 
@@ -17,12 +17,12 @@ class DemoActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_demo)
     marker_view.onCreate(savedInstanceState)
-    marker_view.focusToLocation(Location(50.447604999999996, 30.5221409999999998))
+    marker_view.focusToLocation(LatLng(50.447604999999996, 30.5221409999999998))
   }
 
   override fun onPostCreate(savedInstanceState: Bundle?) {
     super.onPostCreate(savedInstanceState)
-    val markerLoc = Location(50.447604999999996, 30.5221409999999998)
+    val markerLoc = LatLng(50.447604999999996, 30.5221409999999998)
     val place = MyPlace("test", markerLoc, "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg", R.drawable.ic_launcher)
     marker_view.addMarkers(hashSetOf(place))
     setListeners()
@@ -72,23 +72,24 @@ class DemoActivity : AppCompatActivity() {
   }
 }
 
-data class MyPlace(val markerId: String, val markerLocation: Location, val iconPath: String, val drawableRes: Int) : Place {
+data class MyPlace(val markerId: String, val markerLocation: LatLng, val iconPath: String, val drawableRes: Int) : Place {
   override fun getId(): String = markerId
 
-  override fun getLocation(): Location = markerLocation
+  override fun getLocation(): LatLng = markerLocation
 
   override fun getMarkerPath(): String = iconPath
 
   override fun getDrawable(): Int = drawableRes
 
   companion object {
+    @Suppress("UNUSED")
     @JvmField val CREATOR: Parcelable.Creator<MyPlace> = object : Parcelable.Creator<MyPlace> {
       override fun createFromParcel(source: Parcel): MyPlace = MyPlace(source)
       override fun newArray(size: Int): Array<MyPlace?> = arrayOfNulls(size)
     }
   }
 
-  constructor(source: Parcel) : this(source.readString(), source.readParcelable<Location>(Location::class.java.classLoader), source.readString(), source.readInt())
+  constructor(source: Parcel) : this(source.readString(), source.readParcelable<LatLng>(LatLng::class.java.classLoader), source.readString(), source.readInt())
 
   override fun describeContents() = 0
 

@@ -5,10 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
-import com.github.alkurop.streetviewmarker.Location;
+import com.github.alkurop.streetviewmarker.MapsConfig;
 import com.github.alkurop.streetviewmarker.Place;
 import com.github.alkurop.streetviewmarker.StreetMarkerView;
 import com.github.alkurop.streetviewmarker.UpdatePosition;
+import com.github.alkurop.streetviewmarker.UtilsKt;
+import com.google.android.gms.maps.model.LatLng;
 import java.util.HashSet;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -23,13 +25,14 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     marker_view = (StreetMarkerView) findViewById(R.id.marker_view);
     marker_view.onCreate(savedInstanceState);
-    marker_view.focusToLocation(new Location(50.447604999999996, 30.5221409999999998));
+    marker_view.focusToLocation(new LatLng(50.447604999999996, 30.5221409999999998));
+
   }
 
   @Override
   protected void onPostCreate(@Nullable Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
-    Location markerLoc = new Location(50.447604999999996, 30.5221409999999998);
+    LatLng markerLoc = new LatLng(50.447604999999996, 30.5221409999999998);
     Place marker = new MyPlace(
         "test",
         markerLoc,
@@ -62,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public Unit invoke(UpdatePosition updatePosition) {
         Log.d("street_view", "camera position changed. new position" + updatePosition.toString());
+
+       /*
+
+       Iterate through all your markers and find out distance from camera to marker.
+
+       Double distance = UtilsKt.calculatePlaceDistance(markerLocation, updatePosition.center);
+
+       Then if distance >  marker_view.getMapsConfig().markersToShowStreetRadius ,
+       add that marker. By default it is 500 meters.
+
+       */
+
         return null;
       }
     });

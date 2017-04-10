@@ -10,50 +10,50 @@ data class MapsConfig(
      * be visible horizontally.
      * Adapt it if looks like markers are not synced with cam horizontally
      */
-    val xMapCameraAngle: Double = 90.toDouble(),
+    @JvmField  val xMapCameraAngle: Double = 90.toDouble(),
 
     /**
      * Camera angle for marker view. The more angle the more markers will
      * be visible vertically.
      * Adapt it if looks like markers are not synced with cam vertically
      */
-    val yMapCameraAngle: Double = 100.toDouble(),
+    @JvmField   val yMapCameraAngle: Double = 100.toDouble(),
 
 
     /**
      * only markers that are 500 meters away will be shown in street view.
      */
-    val markersToShowStreetRadius: Double = 500.toDouble(),
+    @JvmField  val markersToShowStreetRadius: Double = 500.toDouble(),
 
 
     /**
      * markers will scale down unitl they are as far as 50 meters.
      */
-    val markerScaleRadius: Double = 50.toDouble(),
+    @JvmField   val markerScaleRadius: Double = 50.toDouble(),
 
 
     /**
      *  if marker is closer the 10 meters user will move the camera to the marker.
      *  Otherwise click on marker will be executed
      */
-    val markerMinPositionToMoveToMarker: Double = 10.toDouble(),
+    @JvmField  val markerMinPositionToMoveToMarker: Double = 10.toDouble(),
 
 
     /**
      * marker will not scale down when moving away less then 20%
      */
-    val minMarkerSize: Double = 0.2,
+    @JvmField val minMarkerSize: Double = 0.2,
 
 
     /**
      * marker will be shown a bit above the ground. 0 will be straight ground.
      */
-    val yOffset: Double = 0.05,
+    @JvmField  val yOffset: Double = 0.05,
 
 
     /**
      * this is here for debugging. don't touch it.
      */
-    val showIgnoringAzimuth: Boolean = false
+    @JvmField   val showIgnoringAzimuth: Boolean = false
 )
 

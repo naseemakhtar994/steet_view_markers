@@ -12,7 +12,7 @@ import java.util.*
 /**
  * Created by alkurop on 2/3/17.
  */
-class StreetMarkerView : FrameLayout, IStreetOverlayView {
+class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : FrameLayout(context, attrs, defStyleAttr, defStyleRes), IStreetOverlayView {
   val markerView: StreetOverlayView
   val streetView: StreetViewPanoramaView
   val touchOverlay: TouchOverlayView
@@ -32,14 +32,6 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
 
   var cam: StreetViewPanoramaCamera? = null
 
-  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0)
-      : super(context, attrs, defStyleAttr, defStyleRes) {
-    inflate(context, R.layout.view_street_marker, this)
-    markerView = findViewById(R.id.overlay) as StreetOverlayView
-    streetView = findViewById(R.id.panorama) as StreetViewPanoramaView
-    touchOverlay = findViewById(R.id.touch) as TouchOverlayView
-  }
-
   override fun onLocationUpdate(location: LatLng) {
     markerView.onLocationUpdate(location)
   }
@@ -57,7 +49,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
   }
 
   private fun sendCameraPosition(position: LatLng) {
-    val updatePosition = UpdatePosition(Location(position.latitude,
+    val updatePosition = UpdatePosition(LatLng(position.latitude,
         position.longitude), 500)
     onCameraUpdateListener?.invoke(updatePosition)
   }
@@ -72,10 +64,10 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
 
   //CONTROLS
 
-  fun focusToLocation(location: Location) {
+  fun focusToLocation(location: LatLng) {
     streetView.getStreetViewPanoramaAsync { panorama ->
-      panorama.setPosition(LatLng(location.lat, location.lng))
-      sendCameraPosition(LatLng(location.lat, location.lng))
+      panorama.setPosition(LatLng(location.latitude, location.longitude))
+      sendCameraPosition(LatLng(location.latitude, location.longitude))
     }
   }
 
@@ -121,6 +113,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
   private fun restoreState(saveState: Bundle?) {
     saveState?.let {
       shouldFocusToMyLocation = saveState.getBoolean("shouldFocusToMyLocation", true)
+      @Suppress("UNCHECKED_CAST")
       markerDataList = (saveState.getParcelableArray("markerModels") as Array<Place>).toHashSet()
     }
     markerView.addMarkers(markerDataList)
@@ -152,4 +145,11 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
   }
 
   fun onLowMemory() = streetView.onLowMemory()
+
+  init {
+    inflate(context, R.layout.view_street_marker, this)
+    markerView = findViewById(R.id.overlay) as StreetOverlayView
+    streetView = findViewById(R.id.panorama) as StreetViewPanoramaView
+    touchOverlay = findViewById(R.id.touch) as TouchOverlayView
+  }
 }
