@@ -35,7 +35,7 @@ class DemoActivity : AppCompatActivity() {
     marker_view.onMarkerClickListener = {
       Toast.makeText(this, "maker was clicked $it", Toast.LENGTH_SHORT).show()
     }
-    marker_view.onSteetLoadedSuccess = { loadedSuccss ->
+    marker_view.onStreetLoadedSuccess = { loadedSuccss ->
       if (!loadedSuccss) {
         Toast.makeText(this, "This place cannot be shown in street view. Show user some other view", Toast.LENGTH_SHORT).show()
       }

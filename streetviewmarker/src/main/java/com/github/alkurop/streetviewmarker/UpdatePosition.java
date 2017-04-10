@@ -9,4 +9,11 @@ public class UpdatePosition {
     this.radius = radius;
   }
 
+  @Override
+  public String toString() {
+    return "UpdatePosition{" +
+        "center=" + center +
+        ", radius=" + radius +
+        '}';
+  }
 }

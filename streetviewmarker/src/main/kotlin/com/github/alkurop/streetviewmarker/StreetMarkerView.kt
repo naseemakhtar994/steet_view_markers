@@ -17,7 +17,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
   val streetView: StreetViewPanoramaView
   val touchOverlay: TouchOverlayView
 
-  var onSteetLoadedSuccess: ((Boolean) -> Unit)? = null
+  var onStreetLoadedSuccess: ((Boolean) -> Unit)? = null
   var onCameraUpdateListener: ((UpdatePosition) -> Unit)? = null
   var onMarkerClickListener: ((Place) -> Unit)? = null
 
@@ -105,7 +105,7 @@ class StreetMarkerView : FrameLayout, IStreetOverlayView {
           markerView.onLocationUpdate(cameraPosition.position)
           sendCameraPosition(cameraPosition.position)
         }
-        onSteetLoadedSuccess?.invoke(cameraPosition !== null && cameraPosition.links != null)
+        onStreetLoadedSuccess?.invoke(cameraPosition !== null && cameraPosition.links != null)
       }
       panorama.setOnStreetViewPanoramaClickListener { onClick() }
     }
