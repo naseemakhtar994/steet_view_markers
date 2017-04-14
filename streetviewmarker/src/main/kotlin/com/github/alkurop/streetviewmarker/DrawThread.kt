@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
@@ -140,8 +141,12 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
               bufferDataCentered.right.toFloat(),
               bufferDataCentered.bottom.toFloat())
 
+          val paint = Paint()
+          paint.isAntiAlias = true
+          paint.isFilterBitmap = true
+
           bitmap?.let {
-            canvas.drawBitmap(bitmap, null, rec, null)
+            canvas.drawBitmap(bitmap, null, rec, paint)
             markerData = MarkerDrawData(
                 matrixData,
                 bufferDataCentered.left.toFloat(),
