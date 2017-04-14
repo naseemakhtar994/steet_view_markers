@@ -10,6 +10,8 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.location.Location
+import android.location.LocationManager
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
@@ -299,18 +301,15 @@ class DrawThread(private val surfaceHolder: SurfaceHolder,
     return MarkerGeoData(place, distance, azimuth)
   }
 
-  private fun calculatePlaceAzimuth(myLocation: LatLng, markerLocation: LatLng): Double {
-    val dLon = markerLocation.longitude - myLocation.longitude
-    val y = Math.sin(dLon) * Math.cos(markerLocation.latitude)
-    val x = Math.cos(myLocation.latitude) * Math.sin(markerLocation.latitude) -
-        Math.sin(myLocation.latitude) * Math.cos(markerLocation.latitude) * Math
-            .cos(dLon)
-    var angle = Math.atan2(y, x) * 180 / Math.PI
-    if (angle < 0) angle += 360
-    if (angle > 360) angle -= 360
-    return angle
+  fun calculatePlaceAzimuth(myLocation: LatLng, markerLocation: LatLng): Double {
+    val temp = Location(LocationManager.GPS_PROVIDER)
+    temp.latitude = myLocation.latitude
+    temp.longitude = myLocation.longitude
+    val temp2 = Location(LocationManager.GPS_PROVIDER)
+    temp2.latitude = markerLocation.latitude
+    temp2.longitude = markerLocation.longitude
+
+    val bearing = temp.bearingTo(temp2)
+    return bearing.toDouble()
   }
 }
-
-
-fun Double.toRad(): Double = this * Math.PI / 180
