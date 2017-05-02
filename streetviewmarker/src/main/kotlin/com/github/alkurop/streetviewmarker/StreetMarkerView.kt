@@ -12,7 +12,7 @@ import java.util.*
 /**
  * Created by alkurop on 2/3/17.
  */
-class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : FrameLayout(context, attrs, defStyleAttr, defStyleRes), IStreetOverlayView {
+class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), IStreetOverlayView {
   val markerView: StreetOverlayView
   val streetView: StreetViewPanoramaView
   val touchOverlay: TouchOverlayView
@@ -57,7 +57,7 @@ class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: Attrib
   fun onMarkerClicker(geoData: MarkerGeoData) {
     if (geoData.distance >= mapsConfig.markerMinPositionToMoveToMarker / 1000.toDouble()) {
       focusToLocation(geoData.place.location)
-    }else{
+    } else {
       onMarkerClickListener?.invoke(geoData.place)
     }
   }
@@ -132,7 +132,7 @@ class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: Attrib
 
   fun onResume() {
     streetView.onResume()
-    markerView.postDelayed({cam?.let { markerView.onCameraUpdate(it) } }, 300)
+    markerView.postDelayed({ cam?.let { markerView.onCameraUpdate(it) } }, 300)
   }
 
   fun onPause() {
