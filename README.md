@@ -17,15 +17,15 @@ Cheers
 
 ```
 allprojects {
-repositories {
-        ...
-          maven { url 'https://jitpack.io' }
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
         }
 }
 ```
 
 ```
 dependencies {
-	        compile 'com.github.alkurop:steet_view_markers:1.0.0'
+	compile 'com.github.alkurop:steet_view_markers:1.0.0'
 }
 ```
