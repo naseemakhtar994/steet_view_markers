@@ -72,4 +72,14 @@ public class MyPlace implements Place {
     @Override
     public MyPlace[] newArray(int size) {return new MyPlace[size];}
   };
+
+  @Override
+  public String toString() {
+    return "MyPlace{" +
+        "markerId='" + markerId + '\'' +
+        ", iconPath='" + iconPath + '\'' +
+        ", drawable=" + drawable +
+        ", location=" + location +
+        '}';
+  }
 }
