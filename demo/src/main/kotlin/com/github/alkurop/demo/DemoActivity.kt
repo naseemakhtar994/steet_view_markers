@@ -18,12 +18,12 @@ class DemoActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_demo)
     marker_view.onCreate(savedInstanceState)
-    marker_view.focusToLocation(LatLng(50.447604999999996, 30.5221409999999998))
+    marker_view.focusToLocation(LatLng(50.442604999999996, 30.5221409999999998))
   }
 
   override fun onPostCreate(savedInstanceState: Bundle?) {
     super.onPostCreate(savedInstanceState)
-    val markerLoc = LatLng(50.447604999999996, 30.5221409999999998)
+    val markerLoc = LatLng(50.442604999999996, 30.5221409999999998)
     val place = MyPlace("test", markerLoc, "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg", R.drawable.ic_launcher)
     marker_view.addMarkers(hashSetOf(place))
     setListeners()

@@ -23,14 +23,14 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     marker_view = (StreetMarkerView) findViewById(R.id.marker_view);
     marker_view.onCreate(savedInstanceState);
-    marker_view.focusToLocation(new LatLng(50.447604999999996, 30.5221409999999998));
+    marker_view.focusToLocation(new LatLng(50.442604999999996, 30.5221409999999998));
 
   }
 
   @Override
   protected void onPostCreate(@Nullable Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
-    LatLng markerLoc = new LatLng(50.447604999999996, 30.5221409999999998);
+    LatLng markerLoc = new LatLng(50.442604999999996, 30.5221409999999998);
     Place marker = new MyPlace(
         "test",
         markerLoc,
