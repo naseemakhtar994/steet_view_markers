@@ -6,7 +6,7 @@
 Add clickable markers with custom image to an android street view.
 They are animated too.
 
-  
+![demo](https://github.com/alkurop/steet_view_markers/blob/master/demo.gif)
 
 Cheers
 
