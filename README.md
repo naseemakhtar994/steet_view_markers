@@ -26,6 +26,6 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.alkurop:steet_view_markers:1.0.0'
+	compile 'com.github.alkurop:steet_view_markers:1.0.1'
 }
 ```
