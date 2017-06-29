@@ -1,4 +1,6 @@
-# Steet_View_Markers
+# Steet View Markers
+
+[![](https://jitpack.io/v/alkurop/Steet_View_Markers.svg)](https://jitpack.io/#alkurop/Steet_View_Markers)
 
 For everybody asking me lately about street view markers
 
