@@ -24,23 +24,28 @@ public class MainActivity extends AppCompatActivity {
     marker_view = (StreetMarkerView) findViewById(R.id.marker_view);
     marker_view.onCreate(savedInstanceState);
     marker_view.focusToLocation(new LatLng(34.2022332, -118.3910608));
+    setListeners();
 
-  }
 
-  @Override
-  protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-    super.onPostCreate(savedInstanceState);
     LatLng markerLoc = new LatLng(34.2022332, -118.3910608);
+    LatLng markerLoc2 = new LatLng(34.2022332, -118.3910608);
     Place marker = new MyPlace(
         "test",
         markerLoc,
         "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg",
         R.mipmap.ic_launcher);
+    Place marker1 = new MyPlace(
+        "test1",
+        markerLoc,
+        "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg",
+        R.mipmap.ic_launcher);
     HashSet<Place> markers = new HashSet<>();
     markers.add(marker);
+    markers.add(marker1);
     marker_view.addMarkers(markers);
-    setListeners();
+
   }
+
 
   private void setListeners() {
     marker_view.setOnMarkerClickListener(new Function1<Place, Unit>() {

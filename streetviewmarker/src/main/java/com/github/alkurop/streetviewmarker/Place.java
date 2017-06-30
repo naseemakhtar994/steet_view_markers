@@ -19,7 +19,7 @@ public interface Place extends Parcelable {
 
   @Nullable String getMarkerPath();
 
-  @Nullable @DrawableRes int getDrawableRes();
+  @DrawableRes int getDrawableRes();
 
   @Nullable Bitmap getBitmap();
 }
