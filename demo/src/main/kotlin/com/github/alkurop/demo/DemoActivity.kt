@@ -24,7 +24,7 @@ class DemoActivity : AppCompatActivity() {
     marker_view.focusToLocation(LatLng(34.2022332, -118.3910608))
 
     val markerLoc = LatLng(34.2022332, -118.3910608)
-    val markerLoc2 = LatLng(34.2022332, -118.3910608)
+    val markerLoc2 = LatLng(34.20212, -118.3916608)
     val place = MyPlace("test", markerLoc, "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg", R.drawable.ic_launcher)
     val place2 = MyPlace("test1", markerLoc2, "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg", R.drawable.ic_launcher)
     marker_view.addMarkers(hashSetOf(place, place2))
@@ -33,6 +33,9 @@ class DemoActivity : AppCompatActivity() {
   private fun setListeners() {
     marker_view.onMarkerClickListener = {
       Toast.makeText(this, "maker was clicked $it", Toast.LENGTH_SHORT).show()
+    }
+    marker_view.onMarkerLongClickListener = {
+      Toast.makeText(this, "maker was long clicked $it", Toast.LENGTH_SHORT).show()
     }
     marker_view.onStreetLoadedSuccess = { loadedSuccss ->
       if (!loadedSuccss) {

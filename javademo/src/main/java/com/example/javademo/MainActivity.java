@@ -1,7 +1,6 @@
 package com.example.javademo;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,9 +25,8 @@ public class MainActivity extends AppCompatActivity {
     marker_view.focusToLocation(new LatLng(34.2022332, -118.3910608));
     setListeners();
 
-
     LatLng markerLoc = new LatLng(34.2022332, -118.3910608);
-    LatLng markerLoc2 = new LatLng(34.2022332, -118.3910608);
+    LatLng markerLoc2 = new LatLng(34.20212, -118.3910608);
     Place marker = new MyPlace(
         "test",
         markerLoc,
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         R.mipmap.ic_launcher);
     Place marker1 = new MyPlace(
         "test1",
-        markerLoc,
+        markerLoc2,
         "http://www.petakids.com/wp-content/uploads/2015/11/Cute-Red-Bunny.jpg",
         R.mipmap.ic_launcher);
     HashSet<Place> markers = new HashSet<>();
@@ -52,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public Unit invoke(Place place) {
         Toast.makeText(MainActivity.this, "maker was clicked" + place.toString(), Toast.LENGTH_SHORT).show();
+        return null;
+      }
+    });
+    marker_view.setOnMarkerLongClickListener(new Function1<Place, Unit>() {
+      @Override
+      public Unit invoke(Place place) {
+        Toast.makeText(MainActivity.this, "maker was long clicked" + place.toString(), Toast.LENGTH_SHORT).show();
         return null;
       }
     });

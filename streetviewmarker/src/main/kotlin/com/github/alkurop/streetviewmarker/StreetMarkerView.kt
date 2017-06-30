@@ -3,6 +3,7 @@ package com.github.alkurop.streetviewmarker
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.widget.FrameLayout
 import com.google.android.gms.maps.StreetViewPanoramaView
 import com.google.android.gms.maps.model.LatLng
@@ -13,14 +14,16 @@ import java.util.*
  * Created by alkurop on 2/3/17.
  */
 class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), IStreetOverlayView {
+
   val markerView: StreetOverlayView
+
   val streetView: StreetViewPanoramaView
   val touchOverlay: TouchOverlayView
-
   var onStreetLoadedSuccess: ((Boolean) -> Unit)? = null
+
   var onCameraUpdateListener: ((UpdatePosition) -> Unit)? = null
   var onMarkerClickListener: ((Place) -> Unit)? = null
-
+  var onMarkerLongClickListener: ((Place) -> Unit)? = null
   override var mapsConfig: MapsConfig
     set(value) {
       markerView.mapsConfig = value
@@ -28,8 +31,8 @@ class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: Attrib
     get() = markerView.mapsConfig
 
   var shouldFocusToMyLocation = true
-  var markerDataList = hashSetOf<Place>()
 
+  var markerDataList = hashSetOf<Place>()
   var cam: StreetViewPanoramaCamera? = null
 
   override fun onLocationUpdate(location: LatLng) {
@@ -44,6 +47,11 @@ class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: Attrib
     markerView.onClick()
   }
 
+  override fun onLongClick() {
+    markerView.onLongClick()
+  }
+
+
   override fun setLocalClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?) {
     markerView.setLocalClickListener(onClickListener)
   }
@@ -57,12 +65,23 @@ class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: Attrib
   fun onMarkerClicker(geoData: MarkerGeoData) {
     if (geoData.distance >= mapsConfig.markerMinPositionToMoveToMarker / 1000.toDouble()) {
       focusToLocation(geoData.place.location)
-    } else {
-      onMarkerClickListener?.invoke(geoData.place)
     }
+    onMarkerClickListener?.invoke(geoData.place)
+  }
+
+  fun onMarkerLongClicker(geoData: MarkerGeoData) {
+    onMarkerLongClickListener?.invoke(geoData.place)
   }
 
   //CONTROLS
+
+  override fun onTouchEvent(event: MotionEvent): Boolean {
+    return markerView.onTouchEvent(event)
+  }
+
+  override fun setLongClickListener(onClickListener: ((MarkerDrawData) -> Unit)?) {
+    markerView.setLongClickListener(onClickListener)
+  }
 
   fun focusToLocation(location: LatLng) {
     streetView.getStreetViewPanoramaAsync { panorama ->
@@ -99,14 +118,24 @@ class StreetMarkerView @JvmOverloads constructor(context: Context, attrs: Attrib
         }
         onStreetLoadedSuccess?.invoke(cameraPosition !== null && cameraPosition.links != null)
       }
-      panorama.setOnStreetViewPanoramaClickListener { onClick() }
+      panorama.setOnStreetViewPanoramaClickListener {
+        onClick()
+      }
+      panorama.setOnStreetViewPanoramaLongClickListener {
+        onLongClick()
+      }
+
     }
     touchOverlay.onTouchListener = {
       markerView.onTouchEvent(it)
     }
+
+    markerView.setLongClickListener { onMarkerLongClicker(it.matrixData.data) }
+
     markerView.setLocalClickListener {
       onMarkerClicker(it.matrixData.data)
     }
+    markerView.setLongClickListener { onMarkerLongClicker(it.matrixData.data) }
     restoreState(state)
   }
 

@@ -12,18 +12,17 @@ import com.google.android.gms.maps.model.StreetViewPanoramaCamera
 import java.util.*
 import java.util.concurrent.*
 
-/**
- * Created by alkurop on 31.05.16.
- */
+
 internal interface IStreetOverlayView {
   fun onLocationUpdate(location: LatLng)
   fun onCameraUpdate(cameraPosition: StreetViewPanoramaCamera)
   fun addMarkers(markers: HashSet<Place>)
   fun onClick()
+  fun onLongClick()
   fun setLocalClickListener(onClickListener: ((data: MarkerDrawData) -> Unit)?)
-  fun onTouchEvent(event: MotionEvent?): Boolean
   var mapsConfig: MapsConfig
 
+  fun setLongClickListener(onClickListener: ((MarkerDrawData) -> Unit)?)
 }
 
 class StreetOverlayView : SurfaceView, IStreetOverlayView,
@@ -37,6 +36,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
   private var mDrawThread: DrawThread? = null
   private var mLatestTouchPoint: TouchPoint? = null
   private var listener: ((data: MarkerDrawData) -> Unit)? = null
+  private var longClickListener: ((data: MarkerDrawData) -> Unit)? = null
 
   constructor   (context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
@@ -105,12 +105,27 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
     mDrawThread?.start()
   }
 
-  override fun onTouchEvent(event: MotionEvent?): Boolean {
-    mLatestTouchPoint
-    val x = event?.x
-    val y = event?.y
-    mLatestTouchPoint = TouchPoint(x!!, y!!)
+
+  override fun onTouchEvent(event: MotionEvent): Boolean {
+    val x = event.x
+    val y = event.y
+    mLatestTouchPoint = TouchPoint(x, y)
     return false
+  }
+
+  override fun onLongClick() {
+    if (mLatestTouchPoint != null) {
+
+      Log.d(TAG, mLatestTouchPoint.toString())
+      mDrawMarkers.sortedBy { it!!.matrixData.data.distance }.forEach {
+        itt ->
+        Log.d(TAG, itt!!.toString())
+        if (mLatestTouchPoint!!.isInRange(itt)) {
+          longClickListener?.invoke(itt)
+          return
+        }
+      }
+    }
   }
 
   override fun onClick() {
@@ -127,6 +142,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
       }
     }
   }
+
 
   data class TouchPoint(val x: Float, val y: Float) {
     fun isInRange(data: MarkerDrawData?): Boolean {
@@ -146,4 +162,7 @@ class StreetOverlayView : SurfaceView, IStreetOverlayView,
     this.listener = onClickListener
   }
 
+  override fun setLongClickListener(onClickListener: ((MarkerDrawData) -> Unit)?) {
+    this.longClickListener = onClickListener
+  }
 }
