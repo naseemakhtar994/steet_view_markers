@@ -24,3 +24,7 @@ dependencies {
 	compile 'com.github.alkurop:steet_view_markers:1.0.1'
 }
 ```
+License
+
+ 
+MIT: http://rem.mit-license.org
